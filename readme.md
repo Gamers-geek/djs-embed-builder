@@ -1,7 +1,11 @@
-<h1 align="center">djs-embed-builder</h1>
+<h1 align="center">djs-embed-builder (en Français)</h1>
 <br></br>
 
-## Usage
+## Info
+
+Ce projet est une fork du projet initial de [@braxtongpoll/djs-embed-builder](https://github.com/braxtongpoll/djs-embed-builder)
+
+## Utilisation
 ```js
 const { Client } = require('discord.js');
 const djs = require(`djs-embed-builder`);
@@ -25,17 +29,15 @@ client.on("messageCreate", (client, message) => {
 ```
 
 
-## Dependencies 
+## Dépendances 
 * [Discord.js@13.1.0](https://npmjs.com/package/discord.js)
 
 ## Examples
-To see examples go to [examples.js](https://github.com/braxtongpoll/djs-embed-builder/blob/main/src/examples.js)
+Pour voir des examples, rendez-vous dans le fichier [examples.js](https://github.com/Gamers-geek/djs-embed-builder/blob/main/src/examples.js)
 
-It's about 120% easy to use though.
+Le module est extrêmement simple à utiliser !
 
 ## Contact 
-* [Discord](https://plutothe.dev/discord)
-* [Github](https://github.com/braxtongpoll)
-* [Website](https://plutothe.dev/)
-
-Read Me Made by [IceyyM8](https://iceyym8.dev)
+* [Discord](https://discord.gg/7ykdCWQGE6)
+* [Github](https://github.com/Gamers-geek)
+* [Website](https://gamers-geek.gq/)
