@@ -7,44 +7,44 @@ class betterDJS {
         let bool = 1;
         let embed = (preDefinedEmbed) ? preDefinedEmbed : new MessageEmbed()
             .setAuthor({ name: "Embed Builder" })
-            .setDescription("Welcome to the interactive embed builder. Use the buttons below to build the embed, after click post!")
+            .setDescription("Bienvenue dans l'embed builder interracif. Utilisez les boutons pour créer votre embed puis clicker sur Poster !")
         let messageContent = null;
         let id = new Date().getTime();
         let row1 = new MessageActionRow().addComponents(
             new MessageButton()
             .setCustomId("author" + id)
-            .setLabel("Author Text")
+            .setLabel("Auteur")
             .setStyle("SECONDARY")
         ).addComponents(
             new MessageButton()
             .setCustomId("title" + id)
-            .setLabel("Title Text")
+            .setLabel("Titre")
             .setStyle("SECONDARY")
         ).addComponents(
             new MessageButton()
             .setCustomId("titleurl" + id)
-            .setLabel("Title URL")
+            .setLabel("URL du Titre")
             .setStyle("SECONDARY")
         ).addComponents(
             new MessageButton()
             .setCustomId("description" + id)
-            .setLabel("Description Text")
+            .setLabel("Description")
             .setStyle("SECONDARY")
         ).addComponents(
             new MessageButton()
             .setCustomId("footer" + id)
-            .setLabel("Footer Text")
+            .setLabel("Pied de page")
             .setStyle("SECONDARY")
         )
         let row2 = new MessageActionRow().addComponents(
             new MessageButton()
             .setCustomId("authorimage" + id)
-            .setLabel("Author Image")
+            .setLabel("Image de l'Auteur")
             .setStyle("SECONDARY")
         ).addComponents(
             new MessageButton()
             .setCustomId("thumbnail" + id)
-            .setLabel("Thumbnail Image")
+            .setLabel("Thumbnai")
             .setStyle("SECONDARY")
         ).addComponents(
             new MessageButton()
@@ -54,39 +54,39 @@ class betterDJS {
         ).addComponents(
             new MessageButton()
             .setCustomId("footerimage" + id)
-            .setLabel("Footer Image")
+            .setLabel("Image de pied de page")
             .setStyle("SECONDARY")
         ).addComponents(
             new MessageButton()
             .setCustomId("color" + id)
-            .setLabel("Embed Color")
+            .setLabel("Couleur de l'embed")
             .setStyle("SECONDARY")
         )
         let row3 = new MessageActionRow().addComponents(
             new MessageButton()
             .setCustomId("fields" + id)
             .setStyle("SECONDARY")
-            .setLabel("Embed Fields")
+            .setLabel("Champs")
         ).addComponents(
             new MessageButton()
             .setCustomId(`messagecontent` + id)
             .setStyle("SECONDARY")
-            .setLabel("Add message content")
+            .setLabel("Ajouter un message")
         ).addComponents(
             new MessageButton()
             .setCustomId("timestamp" + id)
             .setStyle("SECONDARY")
-            .setLabel("Add Timestamp")
+            .setLabel("Ajouter l'heure")
         ).addComponents(
             new MessageButton()
             .setCustomId("channel" + id)
             .setStyle("PRIMARY")
-            .setLabel("Channel to Post")
+            .setLabel("Salon d'envoi")
         ).addComponents(
             new MessageButton()
             .setCustomId("post" + id)
             .setStyle("DANGER")
-            .setLabel("Post the embed")
+            .setLabel("Publier")
         )
         let field;
         let buttons = [row1, row2, row3];
@@ -98,7 +98,7 @@ class betterDJS {
         let back;
         collecter.on("collect", async function(click) {
             if (click.customId == "messagecontent" + id) {
-                click.update({ content: "What would you like to set the message content to?", components: [] });
+                click.update({ content: "Veuillez taper le contenu du message", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 messageContent = response.content || null;
@@ -110,7 +110,7 @@ class betterDJS {
                 bool = 0;
             };
             if (click.customId == "author" + id) {
-                click.update({ content: "What would you like to set the author text to?", components: [] });
+                click.update({ content: "Veuillez taper l'auteur", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setAuthor({ name: response.content, iconURL: embed.author.iconURL || null }); } catch {};
@@ -119,61 +119,61 @@ class betterDJS {
                 try { embed.setTimestamp(); } catch {};
                 click.update({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "title" + id) {
-                click.update({ content: "What would you like to set the title text to?", components: [] });
+                click.update({ content: "Veuillez taper le titre ?", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setTitle(response.content); } catch {};
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "titleurl" + id) {
-                click.update({ content: "What would you like to set the title URL to?", components: [] });
+                click.update({ content: "Veuillez entrer l'URL du titre", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setURL(response.content); } catch {};
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "description" + id) {
-                click.update({ content: "What would you like to set the description to?", components: [] });
+                click.update({ content: "Veuillez taper votre description", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setDescription(response.content); } catch {};
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "footer" + id) {
-                click.update({ content: "What would you like to set the footer text to?", components: [] });
+                click.update({ content: "Veuillez entrer le texte du pied de page", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setFooter({ text: response.content || " ", iconURL: embed.footer?.iconURL }); } catch (e) { console.log(e.stack) };
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "authorimage" + id) {
-                click.update({ content: "What would you like to set the author image to?", components: [] });
+                click.update({ content: "Quel image souhaitez-vous en auteur ?", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setAuthor({ name: embed.author.name, iconURL: response.content || response.attachments.first().url }) } catch {};
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "color" + id) {
-                click.update({ content: "What color would you like to set the embed to?", components: [] });
+                click.update({ content: "Quelle couleur voudriez-vous pour votre embed ?", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setColor(response.content); } catch {};
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "thumbnail" + id) {
-                click.update({ content: "What would you like to set the thumbnail image to?", components: [] });
+                click.update({ content: "Quelle image voulez-vous mettre en thumbnail ?", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setThumbnail(response.content || response.attachments.first().url); } catch {};
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "image" + id) {
-                click.update({ content: "What would you like to set the large image to?", components: [] });
+                click.update({ content: "Quelle image voulez vous mettre en large image ?", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setImage(response.content || response.attachments.first().url); } catch {};
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "footerimage" + id) {
-                click.update({ content: "What would you like to set the footer image to?", components: [] });
+                click.update({ content: "Quel image voulez-vous intégrer au pied de page ?", components: [] });
                 let response = await waitResponse(interaction.channel, wordFilter);
                 if (!response) return returnHome(interaction, buttons);
                 try { embed.setFooter({ text: embed.footer.text || " ", iconURL: response.content || response.attachments.first().url }); } catch {};
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "channel" + id) {
-                click.update({ content: "What channel would you like to post this to?", components: [] });
+                click.update({ content: "Dans quel salon voulez-vous envoyer ce message ?", components: [] });
                 let msg = await channel.awaitMessages({ filter: wordFilter, max: 1, time: 120000 });
                 let chan;
                 if (msg.first().mentions.channels.first()) {
@@ -188,7 +188,7 @@ class betterDJS {
                 };
                 click.editReply({ embeds: [embed], content: " ", components: buttons });
             } else if (click.customId == "post" + id) {
-                click.update({ embeds: [], components: [], content: "Embed Posted !" })
+                click.update({ embeds: [], components: [], content: "Embed pubié !" })
                 if (preDefinedEmbed) {
                     return (messageContent !== null) ?  interaction.channel.messages.edit(interaction.targetId, { embeds: [embed], content: messageContent }) :  interaction.channel.messages.edit(interaction.targetId, { embeds: [embed] });
                 } else return (messageContent !== null) ? channel.send({ content: messageContent, embeds: [embed] }) : channel.send({ embeds: [embed] });
@@ -203,10 +203,10 @@ class betterDJS {
                 click.update({ components: fieldButtons });
                 back = "home";
             } else if (click.customId == "create-new" + id) {
-                click.update({ content: "What should the name of this field be?", components: [] });
+                click.update({ content: "Quel est le nom du champs ?", components: [] });
                 let name = await waitResponse(interaction.channel, wordFilter);
                 if (!name) return returnHome(click, buttons);
-                click.editReply({ content: "What should the value of this field be?" });
+                click.editReply({ content: "Quelle est la description du champs ?" });
                 let value = await waitResponse(interaction.channel, wordFilter);
                 if (!value) return returnHome(click, buttons);
                 embed.addField(name.content, value.content);
@@ -241,7 +241,7 @@ class betterDJS {
                 let edits = new MessageActionRow().addComponents(
                     new MessageButton()
                     .setCustomId("field-name-" + id)
-                    .setLabel("Field Name: " + embed.fields[field].name)
+                    .setLabel("Nom du champs: " + embed.fields[field].name)
                     .setStyle("SECONDARY")
                 ).addComponents(
                     new MessageButton()
@@ -253,14 +253,14 @@ class betterDJS {
                     edits.addComponents(
                         new MessageButton()
                         .setCustomId("field-inline-" + id)
-                        .setLabel("Field Inline")
+                        .setLabel("Aligner")
                         .setStyle("SUCCESS")
                     )
                 } else {
                     edits.addComponents(
                         new MessageButton()
                         .setCustomId("field-inline-" + id)
-                        .setLabel("Field Inline")
+                        .setLabel("Aligner")
                         .setStyle("DANGER")
                     )
                 };
@@ -270,14 +270,14 @@ class betterDJS {
                 let check = click.customId.split("-")[1];
                 let backup = click.message.components;
                 if (check == "name") {
-                    click.update({ content: "What should the name of this field be?", components: [] });
+                    click.update({ content: "Quel nom voulez-vous donner au champs?", components: [] });
                     let rep = await waitResponse(interaction.channel, wordFilter);
                     if (!rep) return returnHome(click, backup);
                     embed.fields[field].name = rep.content;
-                    backup[0].components[0].setLabel(`Field Name: ${rep.content}`);
+                    backup[0].components[0].setLabel(`Nom du champs : ${rep.content}`);
                     click.editReply({ content: " ", embeds: [embed], components: backup });
                 } else if (check == "value") {
-                    click.update({ content: "What should the value of this field be?", components: [] });
+                    click.update({ content: "Quelle description voulez-vous donner au champs ?", components: [] });
                     let rep = await waitResponse(interaction.channel, wordFilter);
                     if (!rep) return returnHome(click, backup);
                     embed.fields[field].value = rep.content;
