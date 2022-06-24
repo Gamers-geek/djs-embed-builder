@@ -13,7 +13,7 @@
         "discordembed",
         "discord embed"
     ],
-    "author": "PlutoTheDev",
+    "author": "Gamers-geek",
     "license": "MIT",
     "dependencies": {
         "discord.js": "^13.1.0"
@@ -21,10 +21,10 @@
     "devDependencies": {},
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/braxtongpoll/djs-embed-builder.git"
+        "url": "git+https://github.com/Gamers-geek/djs-embed-builder.git"
     },
     "bugs": {
-        "url": "https://github.com/braxtongpoll/djs-embed-builder/issues"
+        "url": "https://github.com/Gamers-geek/djs-embed-builder/issues"
     },
-    "homepage": "https://github.com/braxtongpoll/djs-embed-builder#readme"
+    "homepage": "https://github.com/Gamers-geek/djs-embed-builder#readme"
 }
