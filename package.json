@@ -1,30 +1,30 @@
 {
-    "name": "djs-embed-builder",
-    "version": "1.2.8",
-    "description": "A discord.js interactive embed builder for slash commands.",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [
-        "discord.js",
-        "embeds",
-        "discord",
-        "discordembed",
-        "discord embed"
-    ],
-    "author": "Gamers-geek",
-    "license": "MIT",
-    "dependencies": {
-        "discord.js": "^13.1.0"
-    },
-    "devDependencies": {},
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Gamers-geek/djs-embed-builder.git"
-    },
-    "bugs": {
-        "url": "https://github.com/Gamers-geek/djs-embed-builder/issues"
-    },
-    "homepage": "https://github.com/Gamers-geek/djs-embed-builder#readme"
+  "name": "@gamers-geek/djs-embed-builder",
+  "version": "1.2.8",
+  "description": "A discord.js interactive embed builder for slash commands.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord.js",
+    "embeds",
+    "discord",
+    "discordembed",
+    "discord embed"
+  ],
+  "author": "Gamers-geek",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^13.1.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gamers-geek/djs-embed-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gamers-geek/djs-embed-builder/issues"
+  },
+  "homepage": "https://github.com/Gamers-geek/djs-embed-builder#readme"
 }
