@@ -55,7 +55,7 @@ class betterDJS {
 			.addComponents(
 				new MessageButton()
 					.setCustomId("thumbnail" + id)
-					.setLabel("Thumbnai")
+					.setLabel("Miniature")
 					.setStyle("SECONDARY")
 			)
 			.addComponents(
