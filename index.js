@@ -319,13 +319,13 @@ class betterDJS {
 						new MessageButton()
 							.setCustomId("go-back" + id)
 							.setStyle("SUCCESS")
-							.setLabel("Go Back")
+							.setLabel("Retour")
 					);
 					fieldButtons[fieldButtons.length - 1].components.push(
 						new MessageButton()
 							.setCustomId("create-new" + id)
 							.setStyle("SUCCESS")
-							.setLabel("New Field")
+							.setLabel("Nouveau champs")
 					);
 				} else {
 					fieldButtons[0] = new MessageActionRow()
@@ -333,13 +333,13 @@ class betterDJS {
 							new MessageButton()
 								.setCustomId("create-new" + id)
 								.setStyle("SUCCESS")
-								.setLabel("New Field")
+								.setLabel("Nouveau champs")
 						)
 						.addComponents(
 							new MessageButton()
 								.setCustomId("go-back" + id)
 								.setStyle("SUCCESS")
-								.setLabel("Go Back")
+								.setLabel("Retour")
 						);
 				}
 				click.update({ components: fieldButtons });
@@ -354,20 +354,20 @@ class betterDJS {
 				click.editReply({ content: "Quelle est la description du champs ?" });
 				let value = await waitResponse(interaction.channel, wordFilter);
 				if (!value) return returnHome(click, buttons);
-				embed.addField(name.content, value.content);
+				embed.addFields({ name: name.content, value: value.content});
 				let fieldButtons = await getFieldButtons(embed.fields, id);
 				if (fieldButtons.length) {
 					fieldButtons[fieldButtons.length - 1].components.push(
 						new MessageButton()
 							.setCustomId("go-back" + id)
 							.setStyle("SUCCESS")
-							.setLabel("Go Back")
+							.setLabel("Retour")
 					);
 					fieldButtons[fieldButtons.length - 1].components.push(
 						new MessageButton()
 							.setCustomId("create-new" + id)
 							.setStyle("SUCCESS")
-							.setLabel("New Field")
+							.setLabel("Nouveau champs")
 					);
 				} else {
 					fieldButtons[0] = new MessageActionRow()
@@ -375,13 +375,13 @@ class betterDJS {
 							new MessageButton()
 								.setCustomId("create-new" + id)
 								.setStyle("SUCCESS")
-								.setLabel("New Field")
+								.setLabel("Nouveau champs")
 						)
 						.addComponents(
 							new MessageButton()
 								.setCustomId("go-back" + id)
 								.setStyle("SUCCESS")
-								.setLabel("Go Back")
+								.setLabel("Retour")
 						);
 				}
 				click.editReply({
@@ -402,13 +402,13 @@ class betterDJS {
 								new MessageButton()
 									.setCustomId("go-back" + id)
 									.setStyle("SUCCESS")
-									.setLabel("Go Back")
+									.setLabel("Retour")
 							);
 							fieldButtons[fieldButtons.length - 1].components.push(
 								new MessageButton()
 									.setCustomId("create-new" + id)
 									.setStyle("SUCCESS")
-									.setLabel("New Field")
+									.setLabel("Nouveau champs")
 							);
 						} else {
 							fieldButtons[0] = new MessageActionRow()
@@ -416,13 +416,13 @@ class betterDJS {
 									new MessageButton()
 										.setCustomId("create-new" + id)
 										.setStyle("SUCCESS")
-										.setLabel("New Field")
+										.setLabel("Nouveau champs")
 								)
 								.addComponents(
 									new MessageButton()
 										.setCustomId("go-back" + id)
 										.setStyle("SUCCESS")
-										.setLabel("Go Back")
+										.setLabel("Retour")
 								);
 						}
 						click.update({ components: fieldButtons });
@@ -466,7 +466,7 @@ class betterDJS {
 							new MessageButton()
 								.setCustomId("go-back" + id)
 								.setStyle("SUCCESS")
-								.setLabel("Go Back")
+								.setLabel("Retour")
 						),
 					],
 				});
