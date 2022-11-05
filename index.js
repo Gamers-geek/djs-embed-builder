@@ -479,7 +479,7 @@ class betterDJS {
 				let backup = click.message.components;
 				if (check == "name") {
 					click.update({
-						content: "Quel nom voulez-vous donner au champs?",
+						content: "Quel nom voulez-vous donner au champs ?",
 						components: [],
 					});
 					let rep = await waitResponse(interaction.channel, wordFilter);
