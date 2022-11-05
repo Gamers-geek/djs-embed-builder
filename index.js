@@ -127,11 +127,14 @@ class betterDJS {
 		collecter.on("collect", async function (click) {
 			if (click.customId == "messagecontent" + id) {
 				click.update({
-					content: "Veuillez taper le contenu du message",
+					content:
+						"Veuillez taper le contenu du message ou tapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				messageContent = response.content || null;
 				return click.editReply({
 					embeds: [embed],
@@ -144,9 +147,18 @@ class betterDJS {
 				bool = 0;
 			}
 			if (click.customId == "author" + id) {
-				click.update({ content: "Veuillez taper l'auteur", components: [] });
+				click.update({
+					content:
+						"Veuillez entrer le nom de l'auteur ou tapez `cancel` pour annuler l'action.",
+					components: [],
+				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				while (response.content.length > 256) {
+					response = await waitResponse(interaction.channel, wordFilter);
+				}
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
 					embed.setAuthor({
 						name: response.content,
@@ -156,49 +168,76 @@ class betterDJS {
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "timestamp" + id) {
 				try {
+					if (embed.description == null)
+						embed.description =
+							"Bienvenue dans l'embed builder interractif. Utilisez les boutons pour créer votre embed puis cliquez sur le bouton « Poster » !";
 					embed.setTimestamp();
 				} catch {}
 				click.update({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "title" + id) {
-				click.update({ content: "Veuillez taper le titre ?", components: [] });
+				click.update({
+					content:
+						"Veuillez taper le titre de l'embed ou tapez `cancel` pour annuler l'action.",
+					components: [],
+				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				while (response.content.length > 256) {
+					response = await waitResponse(interaction.channel, wordFilter);
+				}
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
 					embed.setTitle(response.content);
 				} catch {}
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "titleurl" + id) {
 				click.update({
-					content: "Veuillez entrer l'URL du titre",
+					content:
+						"Veuillez entrer l'URL du titre de l'embed ou tapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
 				const regex =
 					/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm;
-				if (!regex.test(response)) return returnHome(interaction, buttons);
+				while (
+					!regex.test(response.content) &&
+					response.content.toLowerCase() != "cancel"
+				) {
+					response = await waitResponse(interaction.channel, wordFilter);
+				}
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
+					if (embed.title == null) embed.title = "Titre par défaut";
 					embed.setURL(response.content);
 				} catch {}
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "description" + id) {
 				click.update({
-					content: "Veuillez taper votre description",
+					content:
+						"Veuillez taper la description de l'embed ou tapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
 					embed.setDescription(response.content);
 				} catch {}
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "footer" + id) {
 				click.update({
-					content: "Veuillez entrer le texte du pied de page",
+					content:
+						"Veuillez entrer le texte du pied de page de l'embed ou tapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
 					embed.setFooter({
 						text: response.content || " ",
@@ -210,37 +249,87 @@ class betterDJS {
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "authorimage" + id) {
 				click.update({
-					content: "Quel image souhaitez-vous en auteur ?",
+					content:
+						"Quelle image souhaitez-vous mettre en icone de l'auteur ? (URL autorisée)\nTapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				if (!response.attachments.first()) {
+					const regex =
+						/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm;
+					while (
+						!regex.test(response.content) &&
+						response.content.toLowerCase() != "cancel"
+					) {
+						response = await waitResponse(interaction.channel, wordFilter);
+					}
+				}
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
+					if (embed.description == null)
+						embed.description =
+							"Bienvenue dans l'embed builder interractif. Utilisez les boutons pour créer votre embed puis cliquez sur le bouton « Poster » !";
 					embed.setAuthor({
-						name: embed.author.name,
+						name: embed.author.name || response.author.tag,
 						iconURL: response.content || response.attachments.first().url,
 					});
 				} catch {}
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "color" + id) {
 				click.update({
-					content: "Quelle couleur voudriez-vous pour votre embed ?",
+					content:
+						"Entrez le [code couleur hexadémical](https://htmlcolorcodes.com) pour l'embed ou tapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				const regex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/gm;
+				while (
+					!regex.test(response.content) &&
+					response.content.toLowerCase() != "cancel"
+				) {
+					response = await waitResponse(interaction.channel, wordFilter);
+					console.log(response);
+				}
+				if (response.content.toLowerCase() == "cancel")
+					return returnHome(interaction, buttons);
 				try {
+					if (embed.description == null)
+						embed.description =
+							"Bienvenue dans l'embed builder interractif. Utilisez les boutons pour créer votre embed puis cliquez sur le bouton « Poster » !";
 					embed.setColor(response.content);
+					click.editReply({
+						embeds: [embed],
+						content: " ",
+						components: buttons,
+					});
 				} catch {}
-				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "thumbnail" + id) {
 				click.update({
-					content: "Quelle image voulez-vous mettre en thumbnail ?",
+					content:
+						"Quelle image souhaitez-vous mettre en miniature ? (URL autorisée)\nTapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				if (!response.attachments.first()) {
+					const regex =
+						/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm;
+					while (
+						!regex.test(response.content) &&
+						response.content.toLowerCase() != "cancel"
+					) {
+						response = await waitResponse(interaction.channel, wordFilter);
+					}
+				}
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
+					if (embed.description == null)
+						embed.description =
+							"Bienvenue dans l'embed builder interractif. Utilisez les boutons pour créer votre embed puis cliquez sur le bouton « Poster » !";
 					embed.setThumbnail(
 						response.content || response.attachments.first().url
 					);
@@ -248,25 +337,57 @@ class betterDJS {
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "image" + id) {
 				click.update({
-					content: "Quelle image voulez vous mettre en large image ?",
+					content:
+						"Quelle image souhaitez-vous mettre en image large de l'embed ? (URL autorisée)\nTapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				if (!response.attachments.first()) {
+					const regex =
+						/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm;
+					while (
+						!regex.test(response.content) &&
+						response.content.toLowerCase() != "cancel"
+					) {
+						response = await waitResponse(interaction.channel, wordFilter);
+					}
+				}
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
+					if (embed.description == null)
+						embed.description =
+							"Bienvenue dans l'embed builder interractif. Utilisez les boutons pour créer votre embed puis cliquez sur le bouton « Poster » !";
 					embed.setImage(response.content || response.attachments.first().url);
 				} catch {}
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "footerimage" + id) {
 				click.update({
-					content: "Quel image voulez-vous intégrer au pied de page ?",
+					content:
+						"Quel image voulez-vous intégrer au pied de page ?(URL autorisée)\nTapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let response = await waitResponse(interaction.channel, wordFilter);
 				if (!response) return returnHome(interaction, buttons);
+				if (!response.attachments.first()) {
+					const regex =
+						/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm;
+					while (
+						!regex.test(response.content) &&
+						response.content.toLowerCase() != "cancel"
+					) {
+						response = await waitResponse(interaction.channel, wordFilter);
+					}
+				}
+				if (response.content.toLowerCase() === "cancel")
+					return returnHome(interaction, buttons);
 				try {
+					if (embed.description == null)
+						embed.description =
+							"Bienvenue dans l'embed builder interractif. Utilisez les boutons pour créer votre embed puis cliquez sur le bouton « Poster » !";
 					embed.setFooter({
-						text: embed.footer.text || " ",
+						text: embed.footer.text || response.guild.name,
 						iconURL: response.content || response.attachments.first().url,
 					});
 				} catch {}
@@ -294,7 +415,7 @@ class betterDJS {
 				} catch {}
 				if (chan) {
 					channel = chan;
-					buttons[2].components[1].setLabel(chan.name);
+					buttons[2].components[3].setLabel(chan.name);
 				}
 				click.editReply({ embeds: [embed], content: " ", components: buttons });
 			} else if (click.customId == "post" + id) {
@@ -314,92 +435,72 @@ class betterDJS {
 						: channel.send({ embeds: [embed] });
 			} else if (click.customId == "fields" + id) {
 				let fieldButtons = await getFieldButtons(embed.fields, id);
-				if (fieldButtons.length) {
-					fieldButtons[fieldButtons.length - 1].components.push(
-						new MessageButton()
-							.setCustomId("go-back" + id)
-							.setStyle("SUCCESS")
-							.setLabel("Retour")
-					);
-					fieldButtons[fieldButtons.length - 1].components.push(
-						new MessageButton()
-							.setCustomId("create-new" + id)
-							.setStyle("SUCCESS")
-							.setLabel("Nouveau champs")
-					);
-				} else {
-					fieldButtons[0] = new MessageActionRow()
-						.addComponents(
-							new MessageButton()
-								.setCustomId("create-new" + id)
-								.setStyle("SUCCESS")
-								.setLabel("Nouveau champs")
-						)
-						.addComponents(
-							new MessageButton()
-								.setCustomId("go-back" + id)
-								.setStyle("SUCCESS")
-								.setLabel("Retour")
-						);
-				}
 				click.update({ components: fieldButtons });
 				back = "home";
 			} else if (click.customId == "create-new" + id) {
+				if (embed.fields.length >= 23)
+					return click.reply({
+						content: "Vous ne pouvez pas ajouter plus de 23 champs !",
+						ephemeral: true,
+					});
 				click.update({
-					content: "Quel est le nom du champs ?",
+					content:
+						"Entrez le nom du champs ou tapez `cancel` pour annuler l'action.",
 					components: [],
 				});
 				let name = await waitResponse(interaction.channel, wordFilter);
 				if (!name) return returnHome(click, buttons);
 
-				if (name.content.length > 256) {
-					click.channel.send({
-						content: `Le champs n'a pas été ajouté car le nom du champs faisait plus de 256 caractères. `,
+				while (
+					name.content.toLowerCase() != "cancel" &&
+					name.content.length > 256
+				) {
+					click.editReply({
+						content: `Le nom du champs doit faire moins de 256 caractères. Veuillez rentrer un nom valide ou tapez \`cancel\` pour annuler l'ajout du champs`,
 						ephemeral: true,
 					});
-					return returnHome(click, buttons);
+					name = await waitResponse(interaction.channel, wordFilter);
 				}
-				click.editReply({ content: "Quelle est la description du champs ?" });
+
+				if (name.content.toLowerCase() === "cancel") {
+					let fieldButtons = await getFieldButtons(embed.fields, id);
+					click.editReply({
+						content: " ",
+						components: fieldButtons,
+					});
+					back = "home";
+					return;
+				}
+
+				click.editReply({
+					content:
+						"Entrez la description du champs ou tapez `cancel` pour annuler l'action.",
+				});
 				let value = await waitResponse(interaction.channel, wordFilter);
 				if (!value) return returnHome(click, buttons);
 
-				if (value.content.length > 1024) {
-					click.channel.send({
-						content: `Le champs n'a pas été ajouté car le nom du champs faisait plus de 256 caractères. `,
+				while (
+					value.content.toLowerCase() != "cancel" &&
+					value.content.length > 1024
+				) {
+					click.editReply({
+						content: `La description du champs doit faire moins de 1024 caractères. Veuillez rentrer une description valide ou tapez \`cancel\` pour annuler l'ajout du champs`,
 						ephemeral: true,
 					});
-					return returnHome(click, buttons);
+					value = await waitResponse(interaction.channel, wordFilter);
+				}
+
+				if (value.content.toLowerCase() === "cancel") {
+					let fieldButtons = await getFieldButtons(embed.fields, id);
+					click.editReply({
+						content: " ",
+						components: fieldButtons,
+					});
+					back = "home";
+					return;
 				}
 				embed.addFields({ name: name.content, value: value.content });
 				let fieldButtons = await getFieldButtons(embed.fields, id);
-				if (fieldButtons.length) {
-					fieldButtons[fieldButtons.length - 1].components.push(
-						new MessageButton()
-							.setCustomId("go-back" + id)
-							.setStyle("SUCCESS")
-							.setLabel("Retour")
-					);
-					fieldButtons[fieldButtons.length - 1].components.push(
-						new MessageButton()
-							.setCustomId("create-new" + id)
-							.setStyle("SUCCESS")
-							.setLabel("Nouveau champs")
-					);
-				} else {
-					fieldButtons[0] = new MessageActionRow()
-						.addComponents(
-							new MessageButton()
-								.setCustomId("create-new" + id)
-								.setStyle("SUCCESS")
-								.setLabel("Nouveau champs")
-						)
-						.addComponents(
-							new MessageButton()
-								.setCustomId("go-back" + id)
-								.setStyle("SUCCESS")
-								.setLabel("Retour")
-						);
-				}
 				click.editReply({
 					content: " ",
 					embeds: [embed],
@@ -412,35 +513,7 @@ class betterDJS {
 						returnHome1(click, buttons);
 						break;
 					case "fields":
-						let fieldButtons = await getFieldButtons(embed.fields);
-						if (fieldButtons.length) {
-							fieldButtons[fieldButtons.length - 1].components.push(
-								new MessageButton()
-									.setCustomId("go-back" + id)
-									.setStyle("SUCCESS")
-									.setLabel("Retour")
-							);
-							fieldButtons[fieldButtons.length - 1].components.push(
-								new MessageButton()
-									.setCustomId("create-new" + id)
-									.setStyle("SUCCESS")
-									.setLabel("Nouveau champs")
-							);
-						} else {
-							fieldButtons[0] = new MessageActionRow()
-								.addComponents(
-									new MessageButton()
-										.setCustomId("create-new" + id)
-										.setStyle("SUCCESS")
-										.setLabel("Nouveau champs")
-								)
-								.addComponents(
-									new MessageButton()
-										.setCustomId("go-back" + id)
-										.setStyle("SUCCESS")
-										.setLabel("Retour")
-								);
-						}
+						let fieldButtons = await getFieldButtons(embed.fields, id);
 						click.update({ components: fieldButtons });
 						back = "home";
 						break;
@@ -451,13 +524,19 @@ class betterDJS {
 					.addComponents(
 						new MessageButton()
 							.setCustomId("field-name-" + id)
-							.setLabel("Nom du champs: " + embed.fields[field].name)
+							.setLabel(
+								`Nom du champs : ${
+									embed.fields[field].name.length > 80
+										? embed.fields[field].name.slice(0, 61) + "..."
+										: embed.fields[field].name
+								}`
+							)
 							.setStyle("SECONDARY")
 					)
 					.addComponents(
 						new MessageButton()
 							.setCustomId("field-value-" + id)
-							.setLabel("Field Value")
+							.setLabel("Description du champs")
 							.setStyle("SECONDARY")
 					);
 				if (embed.fields[field].inline == true) {
@@ -500,8 +579,26 @@ class betterDJS {
 					});
 					let rep = await waitResponse(interaction.channel, wordFilter);
 					if (!rep) return returnHome(click, backup);
+					while (
+						rep.content.toLowerCase() != "cancel" &&
+						rep.content.length > 256
+					) {
+						click.editReply({
+							content: `Le nom du champs doit faire moins de 256 caractères. Veuillez rentrer un nom valide ou tapez \`cancel\` pour annuler l'édition du champs`,
+							ephemeral: true,
+						});
+						rep = await waitResponse(interaction.channel, wordFilter);
+					}
+
+					if (rep.content.toLowerCase() === "cancel") {
+						return click.editReply({ content: " ", components: backup });
+					}
 					embed.fields[field].name = rep.content;
-					backup[0].components[0].setLabel(`Nom du champs : ${rep.content}`);
+					backup[0].components[0].data.label = `Nom du champs : ${
+						rep.content.length > 80
+							? rep.content.slice(0, 61) + "..."
+							: rep.content
+					}`;
 					click.editReply({
 						content: " ",
 						embeds: [embed],
@@ -514,6 +611,22 @@ class betterDJS {
 					});
 					let rep = await waitResponse(interaction.channel, wordFilter);
 					if (!rep) return returnHome(click, backup);
+
+					while (
+						rep.content.toLowerCase() != "cancel" &&
+						rep.content.length > 1024
+					) {
+						click.editReply({
+							content: `La description du champs doit faire moins de 1024 caractères. Veuillez rentrer une description valide ou tapez \`cancel\` pour annuler l'édition du champs`,
+							ephemeral: true,
+						});
+						rep = await waitResponse(interaction.channel, wordFilter);
+					}
+
+					if (rep.content.toLowerCase() === "cancel") {
+						return click.editReply({ content: " ", components: backup });
+					}
+
 					embed.fields[field].value = rep.content;
 					click.editReply({
 						content: " ",
@@ -523,11 +636,11 @@ class betterDJS {
 				} else if (check == "inline") {
 					if (embed.fields[field].inline == true) {
 						embed.fields[field].inline = false;
-						backup[0].components[2].setStyle("DANGER");
+						backup[0].components[2].data.style = 4;
 						click.update({ embeds: [embed], components: backup });
 					} else {
 						embed.fields[field].inline = true;
-						backup[0].components[2].setStyle("SUCCESS");
+						backup[0].components[2].data.style = 3;
 						click.update({ embeds: [embed], components: backup });
 					}
 				}
@@ -551,11 +664,59 @@ async function getFieldButtons(fields, id) {
 			new MessageButton()
 				.setCustomId(`edit-field${id}-` + limit)
 				.setStyle("SECONDARY")
-				.setLabel(field.name)
+				.setLabel(
+					field.name.length > 80 ? `${field.name.slice(0, 77)}...` : field.name
+				)
 		);
 		limit++;
 	}
-	if (row.components.length) array.push(row);
+	if (row.components.length) {
+		if (row.components.length <= 3) {
+			row.addComponents(
+				new MessageButton()
+					.setCustomId("go-back" + id)
+					.setStyle("SUCCESS")
+					.setLabel("Retour")
+			);
+			row.addComponents(
+				new MessageButton()
+					.setCustomId("create-new" + id)
+					.setStyle("SUCCESS")
+					.setLabel("Nouveau champs")
+			);
+			array.push(row);
+		} else {
+			array.push(row);
+			row = new MessageActionRow();
+			row.addComponents(
+				new MessageButton()
+					.setCustomId("go-back" + id)
+					.setStyle("SUCCESS")
+					.setLabel("Retour")
+			);
+			row.addComponents(
+				new MessageButton()
+					.setCustomId("create-new" + id)
+					.setStyle("SUCCESS")
+					.setLabel("Nouveau champs")
+			);
+			array.push(row);
+		}
+	} else {
+		row.addComponents(
+			new MessageButton()
+				.setCustomId("go-back" + id)
+				.setStyle("SUCCESS")
+				.setLabel("Retour")
+		);
+		row.addComponents(
+			new MessageButton()
+				.setCustomId("create-new" + id)
+				.setStyle("SUCCESS")
+				.setLabel("Nouveau champs")
+		);
+		array.push(row);
+	}
 	return array;
 }
 
