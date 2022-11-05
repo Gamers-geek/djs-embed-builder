@@ -352,7 +352,7 @@ class betterDJS {
 				let name = await waitResponse(interaction.channel, wordFilter);
 				if (!name) return returnHome(click, buttons);
 
-				if (name.length > 256) {
+				if (name.content.length > 256) {
 					click.channel.send({
 						content: `Le champs n'a pas été ajouté car le nom du champs faisait plus de 256 caractères. `,
 						ephemeral: true,
@@ -363,7 +363,7 @@ class betterDJS {
 				let value = await waitResponse(interaction.channel, wordFilter);
 				if (!value) return returnHome(click, buttons);
 
-				if (value.length > 1024) {
+				if (value.content.length > 1024) {
 					click.channel.send({
 						content: `Le champs n'a pas été ajouté car le nom du champs faisait plus de 256 caractères. `,
 						ephemeral: true,
