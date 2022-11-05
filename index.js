@@ -351,12 +351,26 @@ class betterDJS {
 				});
 				let name = await waitResponse(interaction.channel, wordFilter);
 				if (!name) return returnHome(click, buttons);
+
+				if (name.length > 256) {
+					click.channel.send({
+						content: `Le champs n'a pas été ajouté car le nom du champs faisait plus de 256 caractères. `,
+						ephemeral: true,
+					});
+					return returnHome(click, buttons);
+				}
 				click.editReply({ content: "Quelle est la description du champs ?" });
 				let value = await waitResponse(interaction.channel, wordFilter);
 				if (!value) return returnHome(click, buttons);
-				click.channel.send({ content: `Le champs n'a pas été ajouté car la description faisait plus de 1024 caractères. `})
-				if(value.length > 1024) return returnHome(click, buttons)
-				embed.addFields({ name: name.content, value: value.content});
+
+				if (value.length > 1024) {
+					click.channel.send({
+						content: `Le champs n'a pas été ajouté car le nom du champs faisait plus de 256 caractères. `,
+						ephemeral: true,
+					});
+					return returnHome(click, buttons);
+				}
+				embed.addFields({ name: name.content, value: value.content });
 				let fieldButtons = await getFieldButtons(embed.fields, id);
 				if (fieldButtons.length) {
 					fieldButtons[fieldButtons.length - 1].components.push(
