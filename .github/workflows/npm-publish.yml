@@ -54,24 +54,25 @@ jobs:
 #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this as is, it's automatically generated
 #         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }} # You need to set this in your repo settings
 
-name: npm-publish
-
-on: 
-  push:
-    branches:
-      - main
-
-jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 12
-      - run: npm install
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_AUTH_TOKEN }}
-          tag: "latest"
-          access: "restricted"
+#name: npm-publish
+#
+#on: 
+#  push:
+#    branches:
+#      - main
+#
+#jobs:
+#  publish:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 12
+#      - run: npm install
+#      - uses: JS-DevTools/npm-publish@v1
+#        with:
+#          token: ${{ secrets.NPM_AUTH_TOKEN }}
+#          tag: "latest"
+#          access: "restricted"
+#
