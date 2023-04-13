@@ -6,7 +6,7 @@ Ce projet est une fork du projet initial de [@braxtongpoll/djs-embed-builder](ht
 ## Utilisation
 ```js
 const { Client } = require('discord.js');
-const djs = require(`djs-embed-builder`);
+const djs = require(`@gamers-geek/djs-embed-builder`);
 const client = new Client();
 client.embed = new djs(client).createEmbed
 
